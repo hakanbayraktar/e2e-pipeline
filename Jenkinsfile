@@ -1,5 +1,7 @@
 pipeline{
-    agent any
+    agent{
+        label "jenkins-agent"
+    }
     tools {
         jdk 'Java17'
         maven 'Maven3'
@@ -109,16 +111,4 @@ pipeline{
 
     }
 
-    post {
-        failure {
-            emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
-                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
-                    mimeType: 'text/html',to: "dmistry@yourhostdirect.com"
-            }
-         success {
-               emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
-                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
-                    mimeType: 'text/html',to: "dmistry@yourhostdirect.com"
-          }      
-    }
 }
